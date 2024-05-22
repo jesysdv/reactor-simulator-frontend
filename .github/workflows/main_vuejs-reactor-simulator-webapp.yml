@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: reactorsimulatorfrontend.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_758d2befd4d74dacba93af8e7b1e269e }}/frontend:${{ github.sha }}
+        tags: reactorsimulatorfrontend.azurecr.io/frontend:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'vuejs-reactor-simulator-webapp'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_acdecae562ff4382aecae56a849e4502 }}
-        images: 'reactorsimulatorfrontend.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_758d2befd4d74dacba93af8e7b1e269e }}/frontend:${{ github.sha }}'
+        images: 'reactorsimulatorfrontend.azurecr.io/frontend:${{ github.sha }}'
