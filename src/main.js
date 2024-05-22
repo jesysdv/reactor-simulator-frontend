@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import { createWebHistory, createRouter } from "vue-router";
+import { reactorRoutes } from "@/routes/reactor.js";
 
 // styles
 
@@ -89,6 +90,7 @@ const routes = [
   { path: "/:pathMatch(.*)*", redirect: "/" },
 ];
 
+routes.push(...reactorRoutes);
 const router = createRouter({
   history: createWebHistory(),
   routes,
