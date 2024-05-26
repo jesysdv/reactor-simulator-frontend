@@ -1,13 +1,13 @@
 <template>
   <!-- Header -->
-  <div class="relative bg-emerald-600 md:pt-32 pb-32 pt-12">
+  <div class="relative bg-blueGray-900 md:pt-32 pb-32 pt-12">
     <div class="px-4 md:px-10 mx-auto w-full">
       <div>
         <!-- Card stats -->
         <div class="flex flex-wrap">
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              statSubtitle="TRAFFIC"
+              statSubtitle="ESTADÍSTICA #1"
               statTitle="350,897"
               statArrow="up"
               statPercent="3.48"
@@ -19,7 +19,7 @@
           </div>
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              statSubtitle="NEW USERS"
+              statSubtitle="ESTADÍSTICA #2"
               statTitle="2,356"
               statArrow="down"
               statPercent="3.48"
@@ -31,7 +31,7 @@
           </div>
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              statSubtitle="SALES"
+              statSubtitle="ESTADÍSTICA #3"
               statTitle="924"
               statArrow="down"
               statPercent="1.10"
@@ -43,7 +43,7 @@
           </div>
           <div class="w-full lg:w-6/12 xl:w-3/12 px-4">
             <card-stats
-              statSubtitle="PERFORMANCE"
+              statSubtitle="ESTADÍSTICA #4"
               statTitle="49,65%"
               statArrow="up"
               statPercent="12"

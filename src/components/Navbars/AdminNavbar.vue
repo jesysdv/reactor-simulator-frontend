@@ -11,10 +11,10 @@
         class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
         href="javascript:void(0)"
       >
-        Dashboard
+        Reactor Simulator
       </a>
       <!-- Form -->
-      <form
+      <!-- <form
         class="md:flex hidden flex-row flex-wrap items-center lg:ml-auto mr-3"
       >
         <div class="relative flex w-full flex-wrap items-stretch">
@@ -29,7 +29,7 @@
             class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 relative bg-white bg-white rounded text-sm shadow outline-none focus:outline-none focus:ring w-full pl-10"
           />
         </div>
-      </form>
+      </form> -->
       <!-- User -->
       <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
         <user-dropdown />
