@@ -9,13 +9,14 @@
           <div
             class="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left"
           >
-            Copyright © {{ date }}
+            With ☕ by
             <a
               href="https://www.creative-tim.com?ref=vn-footer-admin"
               class="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
             >
-              Creative Tim
+              Facultad Ingeniería
             </a>
+            Universidad Ean
           </div>
         </div>
         <div class="w-full md:w-8/12 px-4">
@@ -25,7 +26,7 @@
                 href="https://www.creative-tim.com?ref=vn-footer-admin"
                 class="text-blueGray-600 hover:text-blueGray-800 text-sm font-semibold block py-1 px-3"
               >
-                Creative Tim
+                Link 1
               </a>
             </li>
             <li>
