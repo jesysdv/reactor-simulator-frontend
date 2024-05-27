@@ -4,7 +4,8 @@
     <!-- <div class="relative md:ml-64 bg-blueGray-100"> -->
     <div class="relative bg-blueGray-100">
       <admin-navbar />
-      <header-stats />
+      <!-- <header-stats /> -->
+      <div class="relative bg-blueGray-900 py-40"></div>
       <div class="px-4 md:px-10 mx-auto w-full -m-24">
         <router-view />
         <footer-admin />
@@ -15,14 +16,14 @@
 <script>
 import AdminNavbar from "@/components/Navbars/AdminNavbar.vue";
 // import Sidebar from "@/components/Sidebar/Sidebar.vue";
-import HeaderStats from "@/components/Headers/HeaderStats.vue";
+// import HeaderStats from "@/components/Headers/HeaderStats.vue";
 import FooterAdmin from "@/components/Footers/FooterAdmin.vue";
 export default {
   name: "admin-layout",
   components: {
     AdminNavbar,
     // Sidebar,
-    HeaderStats,
+    // HeaderStats,
     FooterAdmin,
   },
 };

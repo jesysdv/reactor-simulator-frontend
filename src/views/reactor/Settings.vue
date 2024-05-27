@@ -30,22 +30,18 @@ export default {
                   {
                     value: "batch",
                     label: "BATCH",
-                    disabled: true,
                   },
                   {
                     value: "cstr",
                     label: "CSTR",
-                    disabled: true,
                   },
                   {
                     value: "pfr",
                     label: "PFR",
-                    disabled: false,
                   },
                   {
                     value: "pbr",
                     label: "PBR",
-                    disabled: true,
                   }
                 ],
                 default: "default",
@@ -60,12 +56,10 @@ export default {
                   {
                     value: "flux",
                     label: "Flujo",
-                    disabled: true,
                   },
                   {
                     value: "conversion",
                     label: "Conversión",
-                    disabled: false,
                   },
                 ],
                 default: "default",
@@ -89,12 +83,10 @@ export default {
                   {
                     value: "concentration",
                     label: "Concentración",
-                    disabled: false,
                   },
                   {
                     value: "pressure",
                     label: "Presiones parciales",
-                    disabled: true,
                   },
                 ],
                 default: "default",
