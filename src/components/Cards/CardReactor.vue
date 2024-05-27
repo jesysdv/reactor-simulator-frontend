@@ -24,11 +24,27 @@
           </h6>
           <div class="flex flex-wrap">
             <div class="w-full lg:w-6/12 px-4" v-for="(field, fieldIndex) in section.fields" :key="`field-${index}-${fieldIndex}`">
-              <div class="relative w-full mb-3">
+              <div class="relative w-full mb-4">
 
-                <label class="block uppercase text-blueGray-600 text-xs font-bold mb-2" :for="field.name">
+                <label class="block text-blueGray-600 text-xs font-bold mb-2" :for="field.name">
+                  <span
+                    v-if="field.type === 'select' || field.type === 'number' || field.type === 'math'"
+                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-1"
+                  >
+                    <i
+                      v-if="field.type === 'select'"
+                      class="fas fa-bars"
+                    ></i>
+                    <i
+                      v-if="field.type === 'number'"
+                      class="fas fa-hashtag"
+                    ></i>
+                    <i
+                      v-if="field.type === 'math'"
+                      class="fas fa-calculator"
+                    ></i>
+                  </span>
                   {{ field.label }}
-                  <span v-if="field.type === 'math'">(Latex)</span>
                 </label>
 
                 <input v-if="field.type === 'text' || field.type === 'number'"
@@ -129,10 +145,9 @@
 
 <script>
 import katex from 'katex';
-// eslint-disable-next-line no-unused-vars
 import axios from 'axios';
 
-// eslint-disable-next-line no-unused-vars
+
 import CardLineGraph from "@/components/Cards/CardLineGraph.vue";
 
 export default {
@@ -151,7 +166,7 @@ export default {
         results: {
           chartData: {},
         },
-        dataColors: ["#4c51bf", "#f3a4b5", "#f6ad55", "#2dce89"],
+        dataColors: ["#4c51bf", "#f3a4b5", "#f6ad55", "#2dce89", "#11cdef", "#2b59b6"]
       };
     },
     created() {
@@ -196,6 +211,71 @@ export default {
 
         // Parse the chemical reaction
         const reaction = this.inputs.chemical_reaction.replace(/\\rightarrow/g, '->'); // Replace latex arrow with '->'
+        const stoichiometricCoefficients = this.getStoichiometricCoefficients(reaction);
+
+
+        const base_url = process.env.VUE_APP_BACKEND_URL;
+        const url = `${base_url}/reactores`;
+
+        const reactorData = {
+          RT: this.getReactorType(),
+          FT0: Number(this.inputs.ft0),
+          NT0: Number(this.inputs.nt0),
+          V: Number(this.inputs.vt),
+          P0: Number(this.inputs.intial_pressure),
+          T0: Number(this.inputs.intial_temperature),
+          yA0: Number(this.inputs.initial_molar_fraction_A),
+          yB0: Number(this.inputs.initial_molar_fraction_B),
+          yC0: Number(this.inputs.initial_molar_fraction_C),
+          yD0: Number(this.inputs.initial_molar_fraction_D),
+          yI: Number(this.inputs.inactive_fraction),
+          a: (stoichiometricCoefficients.a * (-1)) || -1,
+          b: (stoichiometricCoefficients.b * (-1)) || -0.5,
+          c: (stoichiometricCoefficients.c) || 1,
+          d: (stoichiometricCoefficients.d) || 0,
+          EA: Number(this.inputs.ea),
+          A: Number(this.inputs.a),
+          ra: this.inputs.reaction_rate_equation,
+          CA: this.inputs.partial_equation_ca,
+          CB: this.inputs.partial_equation_cb,
+          CC: this.inputs.partial_equation_cc,
+          CD: this.inputs.partial_equation_cd,
+          ti: Number(this.inputs.initial_time),
+          tf: Number(this.inputs.final_time),
+          CEq: this.inputs.custom_equation,
+          caidaPresion: this.inputs.pressure_drop || false,
+          caidaTemperatura: this.inputs.temperature_drop || false,
+          dP: this.inputs.dP_equation,
+          dT: this.inputs.dT_equation,
+        };
+
+        this.results.chartData = {};
+
+        axios.post(url, reactorData, {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        })
+        .then((response) => {
+          this.results.chartData = {
+            title: 'Reactor Data',
+            labels: response.data.labels,
+            mainLabels: response.data.mainLabels,
+            xAxis: response.data.xAxis,
+            datasets: response.data.data.map((data, index) => ({
+              label: response.data.labels[index],
+              data: data.map(d => d[1]),
+              fill: false,
+              borderColor: this.dataColors[index],
+              backgroundColor: this.dataColors[index],
+            })),
+          };
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+      },
+      getStoichiometricCoefficients(reaction) {
         const [reactants, products] = reaction.split('->').map(s => s.trim());
         const reactantsArr = reactants.split('+').map(s => s.trim());
         const productsArr = products.split('+').map(s => s.trim());
@@ -238,62 +318,27 @@ export default {
           }
         });
 
+        return stoichiometricCoefficients;
+      },
+      getReactorType() {
+        // 0: PFR flux
+        // 1: PFR conversion
+        // 2: PBR flux
+        // 3: PBR conversion
+        // 4: Batch flux
+        // 5: Batch conversion
 
-
-        const base_url = process.env.VUE_APP_BACKEND_URL;
-        const url = `${base_url}/api/v1/test`;
-
-        const reactorData = {
-          RT: this.inputs.reactor_type === 'pfr' ? 2 : 1,
-          FNV: Number(this.inputs.fnv),
-          VT: Number(this.inputs.vt),
-          P0: Number(this.inputs.intial_pressure),
-          T0: Number(this.inputs.intial_temperature),
-          yA0: Number(this.inputs.initial_molar_fraction_A),
-          yB0: Number(this.inputs.initial_molar_fraction_B),
-          yC0: Number(this.inputs.initial_molar_fraction_C),
-          yD0: Number(this.inputs.initial_molar_fraction_D),
-          yI: Number(this.inputs.inactive_fraction),
-          a: (stoichiometricCoefficients.a * (-1)) || -1,
-          b: (stoichiometricCoefficients.b * (-1)) || -0.5,
-          c: (stoichiometricCoefficients.c) || 1,
-          d: (stoichiometricCoefficients.d) || 0,
-          EA: Number(this.inputs.ea),
-          A: Number(this.inputs.a),
-          // rA: this.inputs.reaction_rate_equation,
-          ti: Number(this.inputs.initial_time),
-          tf: Number(this.inputs.final_time),
-          CEq: this.inputs.custom_equation,
-          pd_eq: this.inputs.pressure_drop || false,
-          td_eq: this.inputs.temperature_drop || false,
-        };
-
-        this.results.chartData = {};
-
-        axios.post(url, reactorData, {
-          headers: {
-            'Content-Type': 'application/json',
-          }
-        })
-        .then((response) => {
-          this.results.chartData = {
-            title: 'Reactor Data',
-            labels: response.data.labels,
-            mainLabels: response.data.mainLabels,
-            xAxis: response.data.xAxis,
-            datasets: response.data.data.map((data, index) => ({
-              label: response.data.labels[index],
-              data: data.map(d => d[1]),
-              fill: false,
-              borderColor: this.dataColors[index],
-              backgroundColor: this.dataColors[index],
-            })),
-          };
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-      }
+        switch (this.inputs.reactor_type) {
+          case 'pfr':
+            return this.inputs.variable_type === 'flux' ? 0 : 1;
+          case 'pbr':
+            return this.inputs.variable_type === 'flux' ? 2 : 3;
+          case 'batch':
+            return this.inputs.variable_type === 'flux' ? 4 : 5;
+          default:
+            return -1;
+        }
+      },
     },
   }
 </script>

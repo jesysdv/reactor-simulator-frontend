@@ -42,6 +42,7 @@ COPY --from=build /app/node_modules /app/node_modules
 
 # Copy current directory to app directory
 COPY . /app
+RUN cp .env.example .env
 
 # Set environment variables
 ENV NODE_OPTIONS=--openssl-legacy-provider
