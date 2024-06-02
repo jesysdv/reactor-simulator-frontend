@@ -355,17 +355,23 @@ export default {
             return -1;
         }
       },
+      // showField(field) {
+      //   if (!field.showIf) {
+      //     return true;
+      //   }
+      //   return field.showIf.every(condition => this.evalCondition(condition));
+      // },
+      // evalCondition(condition) {
+      //   if (condition.or) {
+      //     return this.inputs[condition.field] === condition.value || this.evalCondition(condition.or)
+      //   }
+      //   return this.inputs[condition.field] === condition.value;
+      // },
       showField(field) {
-        if (!field.showIf) {
-          return true;
-        }
-        return field.showIf.every(condition => this.evalCondition(condition));
+        return field.showIf?.every(condition => this.evalCondition(condition)) ?? true;
       },
       evalCondition(condition) {
-        if (condition.or) {
-          return this.inputs[condition.field] === condition.value || this.evalCondition(condition.or)
-        }
-        return this.inputs[condition.field] === condition.value;
+        return this.inputs[condition.field] === condition.value || condition.or && this.evalCondition(condition.or);
       },
     },
   }
