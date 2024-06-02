@@ -153,6 +153,12 @@
             v-if="!isEmpty(results.chartData)"
             :chartData="results.chartData"
           />
+          <div v-if="!isEmpty(results.chartData)">
+            <card-line-graph
+              v-for="(result, index) in results.chartData" :key="`result-${index}`"
+              :chartData="result"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -265,7 +271,7 @@ export default {
           dT: this.inputs.dT_equation,
         };
 
-        this.results.chartData = {};
+        this.results.chartData = [];
 
         axios.post(url, reactorData, {
           headers: {
@@ -273,19 +279,39 @@ export default {
           }
         })
         .then((response) => {
-          this.results.chartData = {
-            title: 'Reactor Data',
-            labels: response.data.labels,
-            mainLabels: response.data.mainLabels,
-            xAxis: response.data.xAxis,
-            datasets: response.data.data.map((data, index) => ({
-              label: response.data.labels[index],
-              data: data.map(d => d[1]),
-              fill: false,
-              borderColor: this.dataColors[index],
-              backgroundColor: this.dataColors[index],
-            })),
-          };
+          // for each label in response.data.labels
+          response.data.labels.forEach((label, index) => {
+            console.log("Label and Index: ", label, index);
+            this.results.chartData[index] = {
+              title: 'Resultado de la simulación para ' + label,
+              labels: [label],
+              xAxis: response.data.xAxis,
+              datasets: {
+                label: label,
+                data: response.data.data[index].map(d => d[1]),
+                fill: false,
+                borderColor: this.dataColors[index],
+                backgroundColor: this.dataColors[index],
+              }
+            };
+            console.log("Datasets for ", label, " are: ", this.results.chartData[index].datasets);
+          });
+
+          console.log("Chart Data: ", this.results.chartData);
+
+          // this.results.chartData = {
+          //   title: 'Reactor Data',
+          //   labels: response.data.labels,
+          //   mainLabels: response.data.main_labels,
+          //   xAxis: response.data.xAxis,
+          //   datasets: response.data.data.map((data, index) => ({
+          //     label: response.data.labels[index],
+          //     data: data.map(d => d[1]),
+          //     fill: false,
+          //     borderColor: this.dataColors[index],
+          //     backgroundColor: this.dataColors[index],
+          //   })),
+          // };
         })
         .catch((error) => {
           console.error(error);

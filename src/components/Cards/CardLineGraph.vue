@@ -38,10 +38,8 @@ export default {
       var config = {
         type: "line",
         data: {
-          // labels: this.chartData.xAxis,
-          // datasets: this.chartData.datasets,
-          labels: this.chartData.xAxis,
-          datasets: this.chartData.datasets,
+          labels: this.chartData.xAxis, // All x-axis points
+          datasets: this.chartData.datasets, // Dataset objects [label, data, backgroundColor, borderColor]
         },
         options: {
           maintainAspectRatio: false,
@@ -109,6 +107,8 @@ export default {
           },
         },
       };
+      // print chartData
+      console.log("Chart Data: ", this.chartData);
       var ctx = document.getElementById("line-chart").getContext("2d");
       window.myLine = new Chart(ctx, config);
     });
