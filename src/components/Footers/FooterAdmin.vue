@@ -5,9 +5,9 @@
       <div
         class="flex flex-wrap items-center md:justify-between justify-center"
       >
-        <div class="w-full md:w-4/12 px-4">
+        <div class="w-full px-4">
           <div
-            class="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left"
+            class="text-sm text-blueGray-500 font-semibold py-1 text-center"
           >
             With ☕ by
             <a
@@ -19,7 +19,7 @@
             Universidad Ean
           </div>
         </div>
-        <div class="w-full md:w-8/12 px-4">
+        <!-- <div class="w-full md:w-8/12 px-4">
           <ul class="flex flex-wrap list-none md:justify-end justify-center">
             <li>
               <a
@@ -54,7 +54,7 @@
               </a>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
     </div>
   </footer>

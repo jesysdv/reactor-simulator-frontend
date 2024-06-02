@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       formData: {
-        formTitle: "Reactor de lecho fijo",
+        formTitle: "Simulación de reactores químicos",
         formSections: [
           {
             section: "Tipo de reactor",

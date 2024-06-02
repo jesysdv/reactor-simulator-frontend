@@ -8,17 +8,17 @@ import Settings from "@/views/reactor/Settings.vue";
 // routes
 
 const routes = [
+  {
+    path: "/",
+    redirect: "/reactor",
+  },
 	{
     path: "/reactor",
-    redirect: "/reactor/dashboard",
+    redirect: "/reactor/simulate",
     component: Reactor,
     children: [
       {
-        path: "/reactor/dashboard",
-        component: Settings,
-      },
-      {
-        path: "/reactor/settings",
+        path: "/reactor/simulate",
         component: Settings,
       }
 		]
