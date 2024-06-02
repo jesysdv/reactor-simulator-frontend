@@ -346,6 +346,240 @@ export default {
                   }
                 ]
               },
+              {
+                name: "heat_capacity_A",
+                label: "Capacidad calorífica de A (CpA)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Heat capacity of A",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "heat_capacity_B",
+                label: "Capacidad calorífica de B (CpB)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Heat capacity of B",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "heat_capacity_C",
+                label: "Capacidad calorífica de C (CpC)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Heat capacity of C",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "heat_capacity_D",
+                label: "Capacidad calorífica de D (CpD)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Heat capacity of D",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "enthalpy_A",
+                label: "Entalpía de referencia de A (HAref)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Reference enthalpy of A",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "enthalpy_B",
+                label: "Entalpía de referencia de B (HBref)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Reference enthalpy of B",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "enthalpy_C",
+                label: "Entalpía de referencia de C (HCref)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Reference enthalpy of C",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "enthalpy_D",
+                label: "Entalpía de referencia de D (HDref)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Reference enthalpy of D",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                name: "temperature_reference",
+                label: "Temperatura de referencia (Tref)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Reference temperature",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  },
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "batch",
+                      }
+                    }
+                  }
+                ]
+              }
             ],
           }
         ],
