@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       formData: {
-        formTitle: "Simulación de reactores químicos",
+        formTitle: "Simulación de reactor químico",
         formSections: [
           {
             section: "Tipo de reactor",
@@ -214,7 +214,7 @@ export default {
                 default: "1",
                 required: true,
                 help: "Concentration equation CA",
-                showOnly: [
+                showIf: [
                   {
                     field: "variable_type",
                     value: "conversion",
@@ -228,7 +228,7 @@ export default {
                 default: "1",
                 required: true,
                 help: "Concentration equation CB",
-                showOnly: [
+                showIf: [
                   {
                     field: "variable_type",
                     value: "conversion",
@@ -242,7 +242,7 @@ export default {
                 default: "1",
                 required: true,
                 help: "Concentration equation CC",
-                showOnly: [
+                showIf: [
                   {
                     field: "variable_type",
                     value: "conversion",
@@ -256,7 +256,7 @@ export default {
                 default: "1",
                 required: true,
                 help: "Concentration equation CD",
-                showOnly: [
+                showIf: [
                   {
                     field: "variable_type",
                     value: "conversion",
@@ -307,7 +307,7 @@ export default {
                 default: "1",
                 required: false,
                 help: "Pressure drop equation",
-                showOnly: [
+                showIf: [
                   {
                     field: "pressure_drop",
                     value: true,
@@ -329,7 +329,7 @@ export default {
                 default: "1",
                 required: false,
                 help: "Temperature drop equation",
-                showOnly: [
+                showIf: [
                   {
                     field: "temperature_drop",
                     value: true,

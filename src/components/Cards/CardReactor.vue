@@ -23,9 +23,10 @@
             {{ section.section }}
           </h6>
           <div class="flex flex-wrap">
-            <div class="w-full lg:w-6/12 px-4" v-for="(field, fieldIndex) in section.fields" :key="`field-${index}-${fieldIndex}`">
-              <div class="relative w-full mb-4">
+            <div :class="{ 'lg:w-6/12': showField(field) }" class="w-full px-4" v-for="(field, fieldIndex) in section.fields" :key="`field-${index}-${fieldIndex}`">
+              <div class="relative w-full mb-4" v-if="showField(field)">
 
+                <!-- Label -->
                 <label class="block text-blueGray-600 text-xs font-bold mb-2" :for="field.name">
                   <span
                     v-if="field.type === 'select' || field.type === 'number' || field.type === 'math'"
@@ -47,6 +48,7 @@
                   {{ field.label }}
                 </label>
 
+                <!-- Para los tipos text y number -->
                 <input v-if="field.type === 'text' || field.type === 'number'"
                   :type="field.type"
                   :id="field.name"
@@ -59,6 +61,7 @@
                   :required="field.required"
                 />
 
+                <!-- Para los tipos math -->
                 <input v-if="field.type === 'math'"
                   type='text'
                   :id="field.name"
@@ -112,6 +115,7 @@
                     </span>
                   </label>
                 </div>
+
               </div>
             </div>
           </div>
@@ -338,6 +342,21 @@ export default {
           default:
             return -1;
         }
+      },
+      showField(field) {
+        console.log('field: ', field)
+        var showField = true;
+        if (field.showIf) {
+          console.log('field.showIf: ', field.showIf)
+          field.showIf.forEach((condition) => {
+            console.log('condition: ', condition)
+            if (this.inputs[condition.field] !== condition.value) {
+              showField = false;
+            }
+          });
+        }
+        console.log('showField: ', showField)
+        return showField;
       },
     },
   }
