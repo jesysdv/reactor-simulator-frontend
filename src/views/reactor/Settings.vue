@@ -348,7 +348,7 @@ export default {
               },
               {
                 name: "heat_capacity_A",
-                label: "Capacidad calorífica de A (CpA)",
+                label: "Calor específico de referencia de A (CpA)",
                 type: "number",
                 default: 1,
                 required: true,
@@ -374,7 +374,7 @@ export default {
               },
               {
                 name: "heat_capacity_B",
-                label: "Capacidad calorífica de B (CpB)",
+                label: "Calor específico de referencia de B (CpB)",
                 type: "number",
                 default: 1,
                 required: true,
@@ -400,7 +400,7 @@ export default {
               },
               {
                 name: "heat_capacity_C",
-                label: "Capacidad calorífica de C (CpC)",
+                label: "Calor específico de referencia de C (CpC)",
                 type: "number",
                 default: 1,
                 required: true,
@@ -426,7 +426,7 @@ export default {
               },
               {
                 name: "heat_capacity_D",
-                label: "Capacidad calorífica de D (CpD)",
+                label: "Calor específico de referencia de D (CpD)",
                 type: "number",
                 default: 1,
                 required: true,
@@ -555,7 +555,7 @@ export default {
                 ]
               },
               {
-                name: "temperature_reference",
+                name: "reference_temperature",
                 label: "Temperatura de referencia (Tref)",
                 type: "number",
                 default: 1,

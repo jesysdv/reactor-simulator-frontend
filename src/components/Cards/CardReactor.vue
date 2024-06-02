@@ -263,6 +263,15 @@ export default {
           caidaTemperatura: this.inputs.temperature_drop || false,
           dP: this.inputs.dP_equation,
           dT: this.inputs.dT_equation,
+          CpA: Number(this.inputs.heat_capacity_A),
+          CpB: Number(this.inputs.heat_capacity_B),
+          CpC: Number(this.inputs.heat_capacity_C),
+          CpD: Number(this.inputs.heat_capacity_D),
+          HAref: Number(this.inputs.enthalpy_A),
+          HBref: Number(this.inputs.enthalpy_B),
+          HCref: Number(this.inputs.enthalpy_C),
+          HDref: Number(this.inputs.enthalpy_D),
+          Tref: Number(this.inputs.reference_temperature),
         };
 
         this.results.chartData = {};
