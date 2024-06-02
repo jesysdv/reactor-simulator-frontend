@@ -6,6 +6,12 @@
       <div class="text-center flex justify-between">
         <h6 class="text-blueGray-700 text-xl font-bold">
           {{ formData.formTitle }}
+          <span class="uppercase" v-if="inputs.reactor_type !== 'default'">
+            - {{ inputs.reactor_type }}
+            <span class="uppercase" v-if="inputs.variable_type !== 'default'">
+              &nbsp; {{ inputs.variable_type }}
+            </span>
+          </span>
         </h6>
         <button
           class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
@@ -23,7 +29,13 @@
             {{ section.section }}
           </h6>
           <div class="flex flex-wrap">
-            <div :class="{ 'lg:w-6/12': showField(field) }" class="w-full px-4" v-for="(field, fieldIndex) in section.fields" :key="`field-${index}-${fieldIndex}`">
+            <div
+              :class="{
+                'hidden': !showField(field),
+                'lg:w-6/12': showField(field),
+              }"
+              class="w-full px-4" v-for="(field, fieldIndex) in section.fields" :key="`field-${index}-${fieldIndex}`"
+            >
               <div class="relative w-full mb-4" v-if="showField(field)">
 
                 <!-- Label -->
@@ -344,19 +356,16 @@ export default {
         }
       },
       showField(field) {
-        console.log('field: ', field)
-        var showField = true;
-        if (field.showIf) {
-          console.log('field.showIf: ', field.showIf)
-          field.showIf.forEach((condition) => {
-            console.log('condition: ', condition)
-            if (this.inputs[condition.field] !== condition.value) {
-              showField = false;
-            }
-          });
+        if (!field.showIf) {
+          return true;
         }
-        console.log('showField: ', showField)
-        return showField;
+        return field.showIf.every(condition => this.evalCondition(condition));
+      },
+      evalCondition(condition) {
+        if (condition.or) {
+          return this.inputs[condition.field] === condition.value || this.evalCondition(condition.or)
+        }
+        return this.inputs[condition.field] === condition.value;
       },
     },
   }

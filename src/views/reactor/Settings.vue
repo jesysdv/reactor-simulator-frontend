@@ -105,6 +105,20 @@ export default {
                 default: 1.5,
                 required: true,
                 help: "Initial total flow of the reactor",
+                showIf: [
+                  {
+                    field: "reactor_type",
+                    value: "pfr",
+                    or: {
+                      field: "reactor_type",
+                      value: "pbr",
+                      or: {
+                        field: "reactor_type",
+                        value: "cstr",
+                      }
+                    }
+                  }
+                ]
               },
               {
                 name: "nt0",
@@ -113,6 +127,12 @@ export default {
                 default: 1,
                 required: true,
                 help: "Initial number of moles of the reactor",
+                showIf: [
+                  {
+                    field: "reactor_type",
+                    value: "batch",
+                  }
+                ]
               },
               {
                 name: "vt",
@@ -121,6 +141,12 @@ export default {
                 default: 1,
                 required: true,
                 help: "Total volume of the reactor",
+                showIf: [
+                  {
+                    field: "reactor_type",
+                    value: "batch",
+                  }
+                ]
               },
               {
                 name: "ea",
@@ -185,15 +211,7 @@ export default {
                 default: 0,
                 required: true,
                 help: "Initial molar fraction of D",
-              },
-              {
-                name: "inactive_fraction",
-                label: "Fracción inerte (yI)",
-                type: "number",
-                default: 0,
-                required: true,
-                help: "Inert fraction",
-              },
+              }
             ],
           },
           {
@@ -283,14 +301,6 @@ export default {
                 default: 140,
                 required: true,
                 help: "Final time of the reactor",
-              },
-              {
-                name: "custom_equation",
-                label: "Ecuación personalizada del reactor (CEq)",
-                type: "math",
-                default: "1",
-                required: true,
-                help: "Custom equation of the reactor",
               },
               {
                 name: "pressure_drop",
