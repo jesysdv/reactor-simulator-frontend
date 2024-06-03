@@ -7,10 +7,8 @@
         <h6 class="text-blueGray-700 text-xl font-bold">
           {{ formData.formTitle }}
           <span class="uppercase" v-if="inputs.reactor_type !== 'default'">
-            - {{ inputs.reactor_type }}
-            <span class="uppercase" v-if="inputs.variable_type !== 'default'">
-              &nbsp; {{ inputs.variable_type }}
-            </span>
+            - {{ inputs.reactor_type }}&nbsp;
+            <span v-if="inputs.variable_type !== 'default'">{{ inputs.variable_type }}</span>
           </span>
         </h6>
         <button
