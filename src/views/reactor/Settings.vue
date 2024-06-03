@@ -231,13 +231,7 @@ export default {
                 type: "math",
                 default: "1",
                 required: true,
-                help: "Concentration equation CA",
-                showIf: [
-                  {
-                    field: "variable_type",
-                    value: "conversion",
-                  }
-                ]
+                help: "Concentration equation CA"
               },
               {
                 name: "partial_equation_cb",
@@ -246,12 +240,6 @@ export default {
                 default: "1",
                 required: true,
                 help: "Concentration equation CB",
-                showIf: [
-                  {
-                    field: "variable_type",
-                    value: "conversion",
-                  }
-                ]
               },
               {
                 name: "partial_equation_cc",
@@ -260,12 +248,6 @@ export default {
                 default: "1",
                 required: true,
                 help: "Concentration equation CC",
-                showIf: [
-                  {
-                    field: "variable_type",
-                    value: "conversion",
-                  }
-                ]
               },
               {
                 name: "partial_equation_cd",
@@ -274,12 +256,6 @@ export default {
                 default: "1",
                 required: true,
                 help: "Concentration equation CD",
-                showIf: [
-                  {
-                    field: "variable_type",
-                    value: "conversion",
-                  }
-                ]
               }
             ]
           },
