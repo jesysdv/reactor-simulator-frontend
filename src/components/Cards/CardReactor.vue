@@ -77,14 +77,14 @@
 
                 <!-- Un div donde se le muestra botones con operaciones basicas para añadir a la ecuacion -->
                 <div v-if="field.type === 'math'" class="py-3">
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' + '">+</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' - '">-</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\times '">x</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\div '">/</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' ^ '">^</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\sqrt{} '">√</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\rightarrow '">→</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mb-0 lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\frac{}{} '">a/b</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' + '">+</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' - '">-</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\times '">x</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\div '">/</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' ^ '">^</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\sqrt{} '">√</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\rightarrow '">→</button>
+                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\frac{}{} '">a/b</button>
                 </div>
 
                 <!-- Un div (visible) donde se renderiza la ecuacion a Latex -->
