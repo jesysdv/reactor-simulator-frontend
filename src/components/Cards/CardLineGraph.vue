@@ -17,7 +17,7 @@
     <div class="p-4 flex-auto">
       <!-- Chart -->
       <div class="relative h-350-px">
-        <canvas id="line-chart"></canvas>
+        <canvas :id="`line-chart-${chartData.id}`"></canvas>
       </div>
     </div>
   </div>
@@ -107,9 +107,7 @@ export default {
           },
         },
       };
-      // print chartData
-      console.log("Chart Data: ", this.chartData);
-      var ctx = document.getElementById("line-chart").getContext("2d");
+      var ctx = document.getElementById("line-chart-" + this.chartData.id).getContext("2d");
       window.myLine = new Chart(ctx, config);
     });
   },

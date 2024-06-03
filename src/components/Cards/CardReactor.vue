@@ -147,20 +147,20 @@
       </form>
     </div>
     <div>
-      <div class="flex flex-wrap">
-        <div class="w-full mb-12 xl:mb-0 p-14">
-          <card-line-graph
-            v-if="!isEmpty(results.chartData)"
-            :chartData="results.chartData"
-          />
-          <div v-if="!isEmpty(results.chartData)">
+      <!-- <div class="flex flex-wrap"> -->
+        <div class="w-full mb-12 p-14" v-if="!isEmpty(results.chartData)">
+          <div v-for="(result, index) in results.chartData" :key="`result-${index}`">
             <card-line-graph
-              v-for="(result, index) in results.chartData" :key="`result-${index}`"
               :chartData="result"
             />
           </div>
+
+          <!-- <card-line-graph
+            v-if="!isEmpty(results.chartData)"
+            :chartData="results.chartData[0]"
+          /> -->
         </div>
-      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -281,23 +281,20 @@ export default {
         .then((response) => {
           // for each label in response.data.labels
           response.data.labels.forEach((label, index) => {
-            console.log("Label and Index: ", label, index);
             this.results.chartData[index] = {
+              id: index,
               title: 'Resultado de la simulación para ' + label,
               labels: [label],
               xAxis: response.data.xAxis,
-              datasets: {
+              datasets: [{
                 label: label,
                 data: response.data.data[index].map(d => d[1]),
                 fill: false,
                 borderColor: this.dataColors[index],
                 backgroundColor: this.dataColors[index],
-              }
+              }]
             };
-            console.log("Datasets for ", label, " are: ", this.results.chartData[index].datasets);
           });
-
-          console.log("Chart Data: ", this.results.chartData);
 
           // this.results.chartData = {
           //   title: 'Reactor Data',
