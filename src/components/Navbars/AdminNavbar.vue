@@ -8,7 +8,7 @@
     >
       <!-- Brand -->
       <a
-        class="text-white text-sm uppercase hidden lg:inline-block font-semibold"
+        class="text-white text-sm uppercase inline-block font-semibold"
         href="javascript:void(0)"
       >
         Reactor Simulator
@@ -31,7 +31,7 @@
         </div>
       </form> -->
       <!-- User -->
-      <ul class="flex-col md:flex-row list-none items-center hidden md:flex">
+      <ul class="flex-col md:flex-row list-none items-center flex">
         <user-dropdown />
       </ul>
     </div>
