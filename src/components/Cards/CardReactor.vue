@@ -129,10 +129,13 @@
         <div class="text-center mt-6 py-6">
           <button
             class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+            :class="{ 'cursor-not-allowed opacity-50 pointer-events-none': loadingResults.isLoading }"
             type="button"
             @click="sendForm"
           >
-            Simular
+            <!-- <img v-if="loadingResults.isLoading" src="/loading.gif" alt="Loading..." class="h-5 inline-block" /> -->
+            <img v-if="loadingResults.isLoading" :src="loadingResults.image" alt="Loading..." class="h-5 inline-block" />
+            <span v-else>Simular</span>
           </button>
         </div>
       </form>
@@ -179,7 +182,11 @@ export default {
         results: {
           chartData: {},
         },
-        dataColors: ["#4c51bf", "#f3a4b5", "#f6ad55", "#2dce89", "#11cdef", "#2b59b6"]
+        dataColors: ["#4c51bf", "#f3a4b5", "#f6ad55", "#2dce89", "#11cdef", "#2b59b6"],
+        loadingResults: {
+          isLoading: false,
+          image: '/loading.gif',
+        }
       };
     },
     created() {
@@ -221,6 +228,8 @@ export default {
         });
       },
       sendForm() {
+
+        this.loadingResults.isLoading = true;
 
         // Parse the chemical reaction
         const reaction = this.inputs.chemical_reaction.replace(/\\rightarrow/g, '->'); // Replace latex arrow with '->'
@@ -345,6 +354,12 @@ export default {
             };
           }
 
+          // this.loadingResults.isLoading = false;
+          // Show loading image at least 1 second(s)
+          setTimeout(() => {
+            this.loadingResults.isLoading = false;
+          }, 1000);
+
           // this.results.chartData = {
           //   title: 'Reactor Data',
           //   labels: response.data.labels,
@@ -361,6 +376,7 @@ export default {
         })
         .catch((error) => {
           console.error(error);
+          this.loadingResults.image = '/warning.webp';
         });
       },
       getStoichiometricCoefficients(reaction) {
