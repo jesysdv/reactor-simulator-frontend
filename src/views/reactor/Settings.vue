@@ -149,22 +149,6 @@ export default {
                 ]
               },
               {
-                name: "ea",
-                label: "Energía de activación (EA)",
-                type: "number",
-                default: 6.40,
-                required: true,
-                help: "Activation energy of the reactor",
-              },
-              {
-                name: "a",
-                label: "Factor pre-exponencial (A)",
-                type: "number",
-                default: 1,
-                required: true,
-                help: "Pre-exponential factor of the reactor",
-              },
-              {
                 name: "intial_pressure",
                 label: "Presión inicial",
                 type: "number",
@@ -280,15 +264,23 @@ export default {
               },
               {
                 name: "pressure_drop",
-                label: "Caída de presión",
+                label: "Variación de presión",
                 type: "checkbox",
                 default: false,
                 required: false,
                 help: "Pressure drop in the reactor",
               },
               {
+                name: "temperature_drop",
+                label: "Variación de temperatura",
+                type: "checkbox",
+                default: false,
+                required: false,
+                help: "Temperature drop in the reactor",
+              },
+              {
                 name: "dP_equation",
-                label: "Ecuación de caída de presión",
+                label: "Ecuación de variación de presión",
                 type: "math",
                 default: "1",
                 required: false,
@@ -301,20 +293,40 @@ export default {
                 ]
               },
               {
-                name: "temperature_drop",
-                label: "Caída de temperatura",
-                type: "checkbox",
-                default: false,
-                required: false,
-                help: "Temperature drop in the reactor",
-              },
-              {
                 name: "dT_equation",
-                label: "Ecuación de caída de temperatura",
+                label: "Ecuación de variación de temperatura",
                 type: "math",
                 default: "1",
                 required: false,
                 help: "Temperature drop equation",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  }
+                ]
+              },
+              {
+                name: "ea",
+                label: "Energía de activación (EA)",
+                type: "number",
+                default: 6.40,
+                required: true,
+                help: "Activation energy of the reactor",
+                showIf: [
+                  {
+                    field: "temperature_drop",
+                    value: true,
+                  }
+                ]
+              },
+              {
+                name: "a",
+                label: "Factor pre-exponencial (A)",
+                type: "number",
+                default: 1,
+                required: true,
+                help: "Pre-exponential factor of the reactor",
                 showIf: [
                   {
                     field: "temperature_drop",

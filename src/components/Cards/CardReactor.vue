@@ -11,13 +11,6 @@
             <span v-if="inputs.variable_type !== 'default'">{{ inputs.variable_type }}</span>
           </span>
         </h6>
-        <button
-          class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-          type="button"
-          @click="renderMath"
-        >
-          Settings
-        </button>
       </div>
     </div>
     <div class="flex-auto px-4 lg:px-10 py-10 pt-2">
