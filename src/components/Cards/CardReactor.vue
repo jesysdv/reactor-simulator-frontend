@@ -288,95 +288,83 @@ export default {
           }
         })
         .then((response) => {
-          // if response.data.labels length is 3 or less,
-          if (response.data.labels.length <= 3) {
-            // for each label in response.data.labels
-            response.data.labels.forEach((label, index) => {
-              this.results.chartData[index] = {
-                id: index,
-                title: 'Resultado de la simulación para ' + label,
-                labels: [label],
+          this.loadingResults.image = response.data !== 'Error' ? '/success.gif' : '/warning.webp';
+
+          // setTimeout for the execution of the rest of the code
+          setTimeout(() => {
+            const labelsEx = ["Tiempo", "Presión", "Temperatura"]
+            // if response.data.labels length is 3 or less,
+            if (response.data.labels.length <= 3) {
+              // for each label in response.data.labels
+              response.data.labels.forEach((label, index) => {
+                this.results.chartData[index] = {
+                  id: index,
+                  title: 'Resultado de la simulación para ' + label,
+                  labels: [label],
+                  mainLabels: index >= 1 ? [labelsEx[0], labelsEx[index]] : response.data.main_labels,
+                  xAxis: response.data.xAxis,
+                  datasets: [{
+                    label: label,
+                    data: response.data.data[index].map(d => d[1]),
+                    fill: false,
+                    borderColor: this.dataColors[index],
+                    backgroundColor: this.dataColors[index],
+                  }]
+                };
+              })
+            }
+            else {
+              // Print the first four into one
+              // And the last two separately
+              this.results.chartData[0] = {
+                id: 0,
+                title: 'Resultado de la simulación para ' + response.data.labels.slice(0, 4).join(', '),
+                labels: response.data.labels.slice(0, 4),
                 mainLabels: response.data.main_labels,
                 xAxis: response.data.xAxis,
-                datasets: [{
-                  label: label,
-                  data: response.data.data[index].map(d => d[1]),
+                datasets: response.data.data.slice(0, 4).map((data, index) => ({
+                  label: response.data.labels[index],
+                  data: data.map(d => d[1]),
                   fill: false,
                   borderColor: this.dataColors[index],
                   backgroundColor: this.dataColors[index],
+                }))
+              };
+              // For 'P'
+              this.results.chartData[1] = {
+                id: 1,
+                title: 'Resultado de la simulación para ' + response.data.labels[4],
+                labels: [response.data.labels[4]],
+                mainLabels: [labelsEx[0], labelsEx[1]],
+                xAxis: response.data.xAxis,
+                datasets: [{
+                  label: response.data.labels[4],
+                  data: response.data.data[4].map(d => d[1]),
+                  fill: false,
+                  borderColor: this.dataColors[4],
+                  backgroundColor: this.dataColors[4],
                 }]
               };
-            })
-          }
-          else {
-            // Print the first four into one
-            // And the last two separately
-            this.results.chartData[0] = {
-              id: 0,
-              title: 'Resultado de la simulación para ' + response.data.labels.slice(0, 4).join(', '),
-              labels: response.data.labels.slice(0, 4),
-              mainLabels: response.data.main_labels,
-              xAxis: response.data.xAxis,
-              datasets: response.data.data.slice(0, 4).map((data, index) => ({
-                label: response.data.labels[index],
-                data: data.map(d => d[1]),
-                fill: false,
-                borderColor: this.dataColors[index],
-                backgroundColor: this.dataColors[index],
-              }))
-            };
-            // For 'P'
-            this.results.chartData[1] = {
-              id: 1,
-              title: 'Resultado de la simulación para ' + response.data.labels[4],
-              labels: [response.data.labels[4]],
-              mainLabels: response.data.main_labels,
-              xAxis: response.data.xAxis,
-              datasets: [{
-                label: response.data.labels[4],
-                data: response.data.data[4].map(d => d[1]),
-                fill: false,
-                borderColor: this.dataColors[4],
-                backgroundColor: this.dataColors[4],
-              }]
-            };
 
-            // For 'T'
-            this.results.chartData[2] = {
-              id: 2,
-              title: 'Resultado de la simulación para ' + response.data.labels[5],
-              labels: [response.data.labels[5]],
-              mainLabels: response.data.main_labels,
-              xAxis: response.data.xAxis,
-              datasets: [{
-                label: response.data.labels[5],
-                data: response.data.data[5].map(d => d[1]),
-                fill: false,
-                borderColor: this.dataColors[5],
-                backgroundColor: this.dataColors[5],
-              }]
-            };
-          }
-
-          // this.loadingResults.isLoading = false;
-          // Show loading image at least 1 second(s)
-          setTimeout(() => {
+              // For 'T'
+              this.results.chartData[2] = {
+                id: 2,
+                title: 'Resultado de la simulación para ' + response.data.labels[5],
+                labels: [response.data.labels[5]],
+                mainLabels: [labelsEx[0], labelsEx[2]],
+                xAxis: response.data.xAxis,
+                datasets: [{
+                  label: response.data.labels[5],
+                  data: response.data.data[5].map(d => d[1]),
+                  fill: false,
+                  borderColor: this.dataColors[5],
+                  backgroundColor: this.dataColors[5],
+                }]
+              };
+            }
             this.loadingResults.isLoading = false;
-          }, 1000);
+          }, 1500);
 
-          // this.results.chartData = {
-          //   title: 'Reactor Data',
-          //   labels: response.data.labels,
-          //   mainLabels: response.data.main_labels,
-          //   xAxis: response.data.xAxis,
-          //   datasets: response.data.data.map((data, index) => ({
-          //     label: response.data.labels[index],
-          //     data: data.map(d => d[1]),
-          //     fill: false,
-          //     borderColor: this.dataColors[index],
-          //     backgroundColor: this.dataColors[index],
-          //   })),
-          // };
         })
         .catch((error) => {
           console.error(error);
