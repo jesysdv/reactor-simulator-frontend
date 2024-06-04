@@ -296,6 +296,7 @@ export default {
                 id: index,
                 title: 'Resultado de la simulación para ' + label,
                 labels: [label],
+                mainLabels: response.data.main_labels,
                 xAxis: response.data.xAxis,
                 datasets: [{
                   label: label,
@@ -314,6 +315,7 @@ export default {
               id: 0,
               title: 'Resultado de la simulación para ' + response.data.labels.slice(0, 4).join(', '),
               labels: response.data.labels.slice(0, 4),
+              mainLabels: response.data.main_labels,
               xAxis: response.data.xAxis,
               datasets: response.data.data.slice(0, 4).map((data, index) => ({
                 label: response.data.labels[index],
@@ -328,6 +330,7 @@ export default {
               id: 1,
               title: 'Resultado de la simulación para ' + response.data.labels[4],
               labels: [response.data.labels[4]],
+              mainLabels: response.data.main_labels,
               xAxis: response.data.xAxis,
               datasets: [{
                 label: response.data.labels[4],
@@ -343,6 +346,7 @@ export default {
               id: 2,
               title: 'Resultado de la simulación para ' + response.data.labels[5],
               labels: [response.data.labels[5]],
+              mainLabels: response.data.main_labels,
               xAxis: response.data.xAxis,
               datasets: [{
                 label: response.data.labels[5],

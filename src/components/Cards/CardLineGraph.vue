@@ -71,6 +71,11 @@ export default {
                   fontColor: "rgba(255,255,255,.7)",
                 },
                 display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: this.chartData.mainLabels[0],
+                  fontColor: "white",
+                },
                 gridLines: {
                   display: false,
                   borderDash: [2],
@@ -89,8 +94,8 @@ export default {
                 },
                 display: true,
                 scaleLabel: {
-                  display: false,
-                  labelString: "Value",
+                  display: true,
+                  labelString: this.chartData.mainLabels[1],
                   fontColor: "white",
                 },
                 gridLines: {
