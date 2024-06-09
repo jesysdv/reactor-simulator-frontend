@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0"
-  >
+  <div class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-100 border-0">
     <div class="rounded-t bg-white mb-0 px-6 py-6">
       <div class="text-center flex justify-between">
         <h6 class="text-blueGray-700 text-xl font-bold">
@@ -23,19 +21,14 @@
             <input ref="file" class="hidden" type="file" name="file" :accept="['.json']" @change="uploadFile" />
             <button
               class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-              type="submit"
-              @click.prevent="$refs.file.click()"
-            >
+              type="submit" @click.prevent="$refs.file.click()">
               <i class="fas fa-upload"></i>
             </button>
           </form>
 
-          <button
-            v-if="!isEmpty(this.reactorData.object)"
+          <button v-if="!isEmpty(this.reactorData.object)"
             class="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
-            type="button"
-            @click="downloadResults"
-          >
+            type="button" @click="downloadResults">
             <i class="fas fa-file-export"></i>
           </button>
         </div>
@@ -48,99 +41,180 @@
             {{ section.section }}
           </h6>
           <div class="flex flex-wrap">
-            <div
-              :class="{
+            <div :class="{
                 'hidden': !showField(field),
                 'lg:w-6/12': showField(field),
-              }"
-              class="w-full px-4" v-for="(field, fieldIndex) in section.fields" :key="`field-${index}-${fieldIndex}`"
-            >
+              }" class="w-full px-4" v-for="(field, fieldIndex) in section.fields"
+              :key="`field-${index}-${fieldIndex}`">
               <div class="relative w-full mb-4" v-if="showField(field)">
 
                 <!-- Label -->
                 <label class="block text-blueGray-600 text-xs font-bold mb-2" :for="field.name">
-                  <span
-                    v-if="field.type === 'select' || field.type === 'number' || field.type === 'math'"
-                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-1"
-                  >
-                    <i
-                      v-if="field.type === 'select'"
-                      class="fas fa-bars"
-                    ></i>
-                    <i
-                      v-if="field.type === 'number'"
-                      class="fas fa-hashtag"
-                    ></i>
-                    <i
-                      v-if="field.type === 'math'"
-                      class="fas fa-calculator"
-                    ></i>
+                  <span v-if="field.type === 'select' || field.type === 'number' || field.type === 'math'"
+                    class="text-xs font-semibold inline-block py-1 px-2 uppercase rounded-full text-blueGray-500 bg-blueGray-50 mr-1">
+                    <i v-if="field.type === 'select'" class="fas fa-bars"></i>
+                    <i v-if="field.type === 'number'" class="fas fa-hashtag"></i>
+                    <i v-if="field.type === 'math'" class="fas fa-calculator"></i>
                   </span>
                   {{ field.label }}
                 </label>
 
                 <!-- Para los tipos text y number -->
-                <input v-if="field.type === 'text' || field.type === 'number'"
-                  :type="field.type"
-                  :id="field.name"
+                <input v-if="field.type === 'text' || field.type === 'number'" :type="field.type" :id="field.name"
                   :name="field.name"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                  :class="{ math: field.type === 'math math-input' }"
-                  v-model="inputs[field.name]"
+                  :class="{ math: field.type === 'math math-input' }" v-model="inputs[field.name]"
                   :step="field.type === 'number' ? '0.01' : null"
                   :placeholder="field.placeholder || field.type === 'number' ? '0.00' : '-- -- --'"
-                  :required="field.required"
-                />
+                  :required="field.required" />
 
                 <!-- Para los tipos math -->
-                <input v-if="field.type === 'math'"
-                  type='text'
-                  :id="field.name"
-                  :name="field.name"
+                <input v-if="field.type === 'math'" type='text' :id="field.name" :name="field.name"
                   class="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 math math-input"
-                  v-model="inputs[field.name]"
-                  :placeholder="field.placeholder || 'TeX Equation'"
-                  :required="field.required"
-                />
+                  v-model="inputs[field.name]" :placeholder="field.placeholder || 'TeX Equation'"
+                  :required="field.required" />
 
                 <!-- Un div donde se le muestra botones con operaciones basicas para añadir a la ecuacion -->
                 <div v-if="field.type === 'math'" class="py-3">
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' + '">+</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' - '">-</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\times '">x</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\div '">/</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' ^ '">^</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\sqrt{} '">√</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\rightarrow '">→</button>
-                  <button class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase" @click.prevent="inputs[field.name] += ' \\frac{}{} '">a/b</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' + '">+</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' - '">-</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' \\times '">x</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' \\div '">/</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' ^ '">^</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' \\sqrt{} '">√</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' \\rightarrow '">→</button>
+                  <button
+                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                    @click.prevent="inputs[field.name] += ' \\frac{}{} '">a/b</button>
+                </div>
+
+                <div v-if="field.type === 'math'">
+                  <details class="collapse bg-base-200">
+                    <summary class="collapse-title text-md font-small mb-3">Ver otras variables</summary>
+                    <div class="collapse-content">
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' thetaA '">θA</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' thetaB '">θB</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' thetaC '">θC</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' thetaD '">θD</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CT0 '">CT0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CA0 '">CA0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CB0 '">CB0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CC0 '">CC0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CD0 '">CD0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FA0 '">FA0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FB0 '">FB0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FC0 '">FC0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FD0 '">FD0</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' K '">K</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' deltaCp '">ΔCp</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' deltaHref '">ΔHref</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' deltaHrx '">ΔHrx</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' HA '">HA</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' HB '">HB</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' HC '">HC</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' HD '">HD</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CA '">CA</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CB '">CB</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CC '">CC</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' CD '">CD</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FA0 '">FA</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FB0 '">FB</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FC0 '">FC</button>
+                      <button
+                        class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
+                        @click.prevent="inputs[field.name] += ' FD0 '">FD</button>
+                    </div>
+                  </details>
                 </div>
 
                 <!-- Un div (visible) donde se renderiza la ecuacion a Latex -->
                 <div v-if="field.type === 'math'" class="py-3" :class="`math-latex-render-${field.name}`"></div>
 
 
-                <select v-if="field.type === 'select'"
-                  :id="field.name"
-                  :name="field.name"
+                <select v-if="field.type === 'select'" :id="field.name" :name="field.name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  v-model="inputs[field.name]"
-                  :required="field.required"
-                >
-                    <option selected disabled value="default">Choose an option</option>
-                    <option v-for="(option, index) in field.options" :value="option.value" :key="index" :disabled="option.disabled">{{ option.label }}</option>
+                  v-model="inputs[field.name]" :required="field.required">
+                  <option selected disabled value="default">Choose an option</option>
+                  <option v-for="(option, index) in field.options" :value="option.value" :key="index"
+                    :disabled="option.disabled">{{ option.label }}</option>
                 </select>
 
                 <!-- Para los tipos checkbox -->
                 <div v-if="field.type === 'checkbox'" class="py-3">
                   <label class="inline-flex items-center cursor-pointer">
-                    <input
-                      :id="field.name"
-                      :name="field.name"
-                      type="checkbox"
+                    <input :id="field.name" :name="field.name" type="checkbox"
                       class="form-checkbox border-0 rounded text-blueGray-700 ml-1 w-5 h-5 ease-linear transition-all duration-150"
-                      v-model="inputs[field.name]"
-                      :required="field.required"
-                    />
+                      v-model="inputs[field.name]" :required="field.required" />
                     <span class="ml-2 text-sm font-semibold text-blueGray-600">
                       {{ field.label }}
                     </span>
@@ -157,12 +231,11 @@
         <div class="text-center mt-6 py-6">
           <button
             class="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
-            :class="{ 'cursor-not-allowed opacity-50 pointer-events-none': loadingResults.isLoading }"
-            type="button"
-            @click="sendForm"
-          >
+            :class="{ 'cursor-not-allowed opacity-50 pointer-events-none': loadingResults.isLoading }" type="button"
+            @click="sendForm">
             <!-- <img v-if="loadingResults.isLoading" src="/loading.gif" alt="Loading..." class="h-5 inline-block" /> -->
-            <img v-if="loadingResults.isLoading" :src="loadingResults.image" alt="Loading..." class="h-5 inline-block" />
+            <img v-if="loadingResults.isLoading" :src="loadingResults.image" alt="Loading..."
+              class="h-5 inline-block" />
             <span v-else>Simular</span>
           </button>
         </div>
@@ -170,18 +243,16 @@
     </div>
     <div>
       <!-- <div class="flex flex-wrap"> -->
-        <div class="w-full mb-12 p-14" v-if="!isEmpty(results.chartData)">
-          <div v-for="(result, index) in results.chartData" :key="`result-${index}`">
-            <card-line-graph
-              :chartData="result"
-            />
-          </div>
+      <div class="w-full mb-12 p-14" v-if="!isEmpty(results.chartData)">
+        <div v-for="(result, index) in results.chartData" :key="`result-${index}`">
+          <card-line-graph :chartData="result" />
+        </div>
 
-          <!-- <card-line-graph
+        <!-- <card-line-graph
             v-if="!isEmpty(results.chartData)"
             :chartData="results.chartData[0]"
           /> -->
-        </div>
+      </div>
       <!-- </div> -->
     </div>
   </div>
