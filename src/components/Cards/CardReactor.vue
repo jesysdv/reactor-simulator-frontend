@@ -100,7 +100,7 @@
                     @click.prevent="inputs[field.name] += ' () '">()</button>
                   <button
                     class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
-                    @click.prevent="inputs[field.name] += ' → '">→</button>
+                    @click.prevent="inputs[field.name] += ' \\rightarrow '">→</button>
                 </div>
 
                 <div v-if="field.type === 'math'" class="py-3 mb-5">
@@ -310,7 +310,9 @@ export default {
       this.loadingResults.isLoading = true;
 
       // Parse the chemical reaction
-      const reaction = this.inputs.chemical_reaction.replace('→', '->'); // Replace latex arrow with '->'
+      // const reaction = this.inputs.chemical_reaction.replace('→', '->'); // Replace latex arrow with '->'
+
+      const reaction = this.inputs.chemical_reaction.replace(/\\rightarrow/g, '->'); // Replace latex arrow with '->'
       const stoichiometricCoefficients = this.getStoichiometricCoefficients(reaction);
 
 
