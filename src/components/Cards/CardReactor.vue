@@ -103,9 +103,9 @@
                     @click.prevent="inputs[field.name] += ' → '">→</button>
                 </div>
 
-                <div v-if="field.type === 'math'">
+                <div v-if="field.type === 'math'" class="py-3 mb-5">
                   <details class="collapse bg-base-200">
-                    <summary class="collapse-title text-md font-small mb-3">Ver otras variables</summary>
+                    <summary class="collapse-title text-sm font-small mb-3">Ver otras variables</summary>
                     <div class="collapse-content">
                       <button
                         class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
@@ -448,6 +448,9 @@ export default {
       .catch((error) => {
         console.error(error);
         this.loadingResults.image = '/warning.webp';
+        setTimeout(() => {
+          this.loadingResults.isLoading = false;
+        }, 2000);
       });
     },
     getStoichiometricCoefficients(reaction) {
