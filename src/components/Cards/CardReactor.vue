@@ -41,11 +41,15 @@
             {{ section.section }}
           </h6>
           <div class="flex flex-wrap">
-            <div :class="{
-                'hidden': !showField(field),
-                'lg:w-6/12': showField(field),
-              }" class="w-full px-4" v-for="(field, fieldIndex) in section.fields"
-              :key="`field-${index}-${fieldIndex}`">
+            <div
+              v-for="(field, fieldIndex) in visibileFields(section)"
+              :class="{
+                'lg:w-6/12': showField(field) && (visibileFields(section).length % 2 === 0 || fieldIndex < section.fields.length - 1),
+                'lg:w-12/12': showField(field) && (visibileFields(section).length % 2 !== 0 && fieldIndex === section.fields.length - 1),
+              }"
+              class="w-full px-4"
+              :key="`field-${index}-${fieldIndex}`"
+            >
               <div class="relative w-full mb-4" v-if="showField(field)">
 
                 <!-- Label -->
@@ -84,22 +88,19 @@
                     @click.prevent="inputs[field.name] += ' - '">-</button>
                   <button
                     class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
-                    @click.prevent="inputs[field.name] += ' \\times '">x</button>
+                    @click.prevent="inputs[field.name] += ' * '">x</button>
                   <button
                     class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
-                    @click.prevent="inputs[field.name] += ' \\div '">/</button>
+                    @click.prevent="inputs[field.name] += ' / '">/</button>
                   <button
                     class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
-                    @click.prevent="inputs[field.name] += ' ^ '">^</button>
+                    @click.prevent="inputs[field.name] += ' ** '">^</button>
                   <button
                     class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
-                    @click.prevent="inputs[field.name] += ' \\sqrt{} '">√</button>
+                    @click.prevent="inputs[field.name] += ' () '">()</button>
                   <button
                     class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
-                    @click.prevent="inputs[field.name] += ' \\rightarrow '">→</button>
-                  <button
-                    class="duration-150 ease-linear font-bold hover:shadow-lg lg:mr-1 mb-3 ml-3 px-4 py-2 rounded shadow text-xs transition-all uppercase"
-                    @click.prevent="inputs[field.name] += ' \\frac{}{} '">a/b</button>
+                    @click.prevent="inputs[field.name] += ' → '">→</button>
                 </div>
 
                 <div v-if="field.type === 'math'">
@@ -197,9 +198,6 @@
                   </details>
                 </div>
 
-                <!-- Un div (visible) donde se renderiza la ecuacion a Latex -->
-                <div v-if="field.type === 'math'" class="py-3" :class="`math-latex-render-${field.name}`"></div>
-
 
                 <select v-if="field.type === 'select'" :id="field.name" :name="field.name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -259,7 +257,6 @@
 </template>
 
 <script>
-import katex from 'katex';
 import axios from 'axios';
 
 
@@ -299,19 +296,6 @@ export default {
         this.inputs[field.name] = field.default || '';
       });
     });
-
-    // render the math with a two second delay
-    setTimeout(() => {
-      this.renderMath();
-    }, 2000);
-  },
-  watch: {
-    inputs: {
-      handler() {
-        this.renderMath();
-      },
-      deep: true,
-    },
   },
   methods: {
     isEmpty(obj) {
@@ -321,21 +305,12 @@ export default {
       }
       return true;
     },
-    renderMath() {
-      document.querySelectorAll('.math').forEach((el) => {
-          katex.render(el.value, document.querySelector(`.math-latex-render-${el.name}`), {
-              displayMode: true,
-              output: 'mathml',
-              throwOnError: false,
-          });
-      });
-    },
     sendForm() {
 
       this.loadingResults.isLoading = true;
 
       // Parse the chemical reaction
-      const reaction = this.inputs.chemical_reaction.replace(/\\rightarrow/g, '->'); // Replace latex arrow with '->'
+      const reaction = this.inputs.chemical_reaction.replace('→', '->'); // Replace latex arrow with '->'
       const stoichiometricCoefficients = this.getStoichiometricCoefficients(reaction);
 
 
@@ -551,6 +526,9 @@ export default {
     //   }
     //   return this.inputs[condition.field] === condition.value;
     // },
+    visibileFields(formSection) {
+      return formSection.fields.filter(field => this.showField(field));
+    },
     showField(field) {
       return field.showIf?.every(condition => this.evalCondition(condition)) ?? true;
     },
@@ -573,10 +551,14 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         const contents = e.target.result;
-        this.reactorData.object = JSON.parse(contents);
+        // this.reactorData.object = JSON.parse(contents);
+        //EXAMPLE: {"object":{"RT":4,"FT0":1.5,"NT0":1,"V":1,"P0":10,"T0":533.15,"yA0":0.67,"yB0":0.33,"yC0":0,"yD0":0,"yI":null,"a":-1,"b":-0.5,"c":1,"d":0,"EA":6.4,"A":1,"ra":"1","CA":"1","CB":"1","CC":"1","CD":"1","ti":1,"tf":140,"caidaPresion":false,"caidaTemperatura":false,"dP":"1","dT":"1","CpA":1,"CpB":1,"CpC":1,"CpD":1,"HAref":1,"HBref":1,"HCref":1,"HDref":1,"Tref":1},"file":null}
+        const { object } = JSON.parse(contents);
+        this.reactorData.object = object;
         console.log("The file has been uploaded successfully, contents: ", this.reactorData.object);
         this.inputs.reactor_type = this.reactorData.object.RT === 0 || this.reactorData.object.RT === 1 ? 'pfr' : this.reactorData.object.RT === 2 || this.reactorData.object.RT === 3 ? 'pbr' : 'batch';
         this.inputs.variable_type = this.reactorData.object.RT === 0 || this.reactorData.object.RT === 2 || this.reactorData.object.RT === 4 ? 'flux' : 'conversion';
+        this.inputs.reaction_rate_variable = this.reactorData.object.RT === 0 || this.reactorData.object.RT === 1 ? 'concentration' : 'pressure';
         this.inputs.ft0 = this.reactorData.object.FT0;
         this.inputs.nt0 = this.reactorData.object.NT0;
         this.inputs.vt = this.reactorData.object.V;
