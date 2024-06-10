@@ -103,7 +103,7 @@
                     @click.prevent="inputs[field.name] += ' \\rightarrow '">→</button>
                 </div>
 
-                <div v-if="field.type === 'math'" class="py-3 mb-5">
+                <div v-if="field.type === 'math'" class="py-3">
                   <details class="collapse bg-base-200">
                     <summary class="collapse-title text-sm font-small mb-3">Ver otras variables</summary>
                     <div class="collapse-content">
@@ -198,6 +198,9 @@
                   </details>
                 </div>
 
+                <!-- Un div (visible) donde se renderiza la ecuacion a Latex -->
+                <div v-if="field.type === 'math'" class="py-3 mb-5" :class="`math-latex-render-${field.name}`"></div>
+
 
                 <select v-if="field.type === 'select'" :id="field.name" :name="field.name"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -257,6 +260,7 @@
 </template>
 
 <script>
+import katex from 'katex';
 import axios from 'axios';
 
 
@@ -296,6 +300,19 @@ export default {
         this.inputs[field.name] = field.default || '';
       });
     });
+
+    // render the math with a two second delay
+    setTimeout(() => {
+      this.renderMath();
+    }, 2000);
+  },
+  watch: {
+    inputs: {
+      handler() {
+        this.renderMath();
+      },
+      deep: true,
+    },
   },
   methods: {
     isEmpty(obj) {
@@ -304,6 +321,15 @@ export default {
           return false;
       }
       return true;
+    },
+    renderMath() {
+      document.querySelectorAll('.math').forEach((el) => {
+          katex.render(el.value, document.querySelector(`.math-latex-render-${el.name}`), {
+              displayMode: true,
+              output: 'mathml',
+              throwOnError: false,
+          });
+      });
     },
     sendForm() {
 
