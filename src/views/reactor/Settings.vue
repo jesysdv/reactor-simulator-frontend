@@ -73,26 +73,7 @@ export default {
                 default: "a +  \\frac{1}{2}b \\rightarrow c",
                 required: true,
                 help: "Chemical reaction of the reactor"
-              },
-              {
-                //variable de calculo de velocidad de reacción - concentración o presiones parciales
-                name: "reaction_rate_variable",
-                label: "Variable de velocidad de reacción",
-                type: "select",
-                options: [
-                  {
-                    value: "concentration",
-                    label: "Concentración",
-                  },
-                  {
-                    value: "pressure",
-                    label: "Presiones parciales",
-                  },
-                ],
-                default: "default",
-                required: true,
-                help: "Select the variable for the reaction rate",
-              },
+              }
             ],
           },
           {
