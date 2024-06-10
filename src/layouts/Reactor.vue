@@ -5,7 +5,9 @@
     <div class="relative bg-blueGray-100">
       <admin-navbar />
       <!-- <header-stats /> -->
-      <div class="relative bg-blueGray-900 py-40"></div>
+      <div class="relative bg-blueGray-900 py-24">
+        <div class="py-6"></div>
+      </div>
       <div class="px-4 md:px-10 mx-auto w-full -m-24">
         <router-view />
         <footer-admin />
