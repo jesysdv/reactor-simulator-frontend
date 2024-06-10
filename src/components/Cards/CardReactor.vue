@@ -374,6 +374,13 @@ export default {
         // setTimeout for the execution of the rest of the code
         setTimeout(() => {
           const labelsEx = ["Tiempo", "Presión", "Temperatura"]
+          // if no response.data.labes return
+          if ( !response.data.labels ){
+            setTimeout(() => {
+              this.loadingResults.isLoading = false;
+            }, 2000);
+            return;
+          }
           // if response.data.labels length is 3 or less,
           if (response.data.labels.length <= 3) {
             // for each label in response.data.labels
